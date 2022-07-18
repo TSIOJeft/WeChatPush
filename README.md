@@ -1,6 +1,8 @@
 # WeChatPush
 基于itchat的微信消息接收端 感谢itchat大佬 和itchat-uos开发 因为我有些地方需要更改就单独下载了itchat的包然后更改的
 
+## 你可以挂在服务器上或者 电脑上 亦或者 单片机上 反正想咋玩就咋玩 微信真的毒瘤 消息推送迟迟不安排 难顶 😱
+
 [itchat](https://github.com/littlecodersh/ItChat)
 
 [itchat-uos](https://github.com/why2lyj/ItChat-UOS)
