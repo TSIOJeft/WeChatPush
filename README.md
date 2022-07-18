@@ -1,7 +1,10 @@
 # WeChatPush
 基于itchat的微信消息接收端 感谢itchat大佬 和itchat-uos开发 因为我有些地方需要更改就单独下载了itchat的包然后更改的
+
 [itchat](https://github.com/littlecodersh/ItChat)
+
 [itchat-uos](https://github.com/why2lyj/ItChat-UOS)
+
 包自己导吧
 环境文件我就不删了
 嘻嘻
