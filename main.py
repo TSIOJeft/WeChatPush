@@ -7,7 +7,7 @@ import itchat.config
 
 @itchat.msg_register(itchat.content.TEXT)
 def text_reply(msg):
-    print(msg.user.nickName)
+    print(msg.user.nickName+"说:"+msg.text)
     data = {
         "content": msg.text,
         "title": msg.user.nickName,
@@ -32,5 +32,5 @@ def text_reply(msg):
 
 if __name__ == '__main__':
     itchat.check_login()
-    itchat.auto_login()
+    itchat.auto_login(hotReload=True,enableCmdQR=2)
     itchat.run()
