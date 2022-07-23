@@ -18,5 +18,5 @@ def text_reply(msg):
 
 if __name__ == '__main__':
     itchat.check_login()
-    itchat.auto_login(hotReload=True)
+    itchat.auto_login(hotReload=True,enableCmdQR=2)
     itchat.run()
