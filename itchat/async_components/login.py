@@ -315,6 +315,7 @@ async def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
                     if msgList:
                         msgList = produce_msg(self, msgList)
                         for msg in msgList:
+                            print(1)
                             self.msgList.put(msg)
                     if contactList:
                         chatroomList, otherList = [], []
@@ -341,6 +342,7 @@ async def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
         if hasattr(exitCallback, '__call__'):
             exitCallback(self.storageClass.userName)
         else:
+
             logger.info('LOG OUT!')
     if getReceivingFnOnly:
         return maintain_loop
