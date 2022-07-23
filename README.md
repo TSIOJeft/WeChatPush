@@ -11,6 +11,7 @@
 环境文件我就不删了
 嘻嘻
 ## 需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为
+## 如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
 [FarPush](www.coolapk.com/apk/com.farplace.farpush)
 ## FarPush 交流群 833957139
 ## 如果运行失败 请导入 requests包 pyqrcode包 pypng包 
