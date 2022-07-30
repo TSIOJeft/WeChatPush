@@ -11,6 +11,11 @@ def text_reply(msg):
     farpush.mespush(msg.user.nickName, msg.text)
 
 
+@itchat.msg_register([itchat.content.VOICE, itchat.content.PICTURE, itchat.content.VIDEO])
+def text_reply(msg):
+    farpush.mespush(msg.user.nickName, msg.type)
+
+
 @itchat.msg_register(itchat.content.TEXT, isGroupChat=True)
 def text_reply(msg):
     farpush.mespush(msg.user.nickName, msg.text)
@@ -18,5 +23,5 @@ def text_reply(msg):
 
 if __name__ == '__main__':
     itchat.check_login()
-    itchat.auto_login(hotReload=True,enableCmdQR=2)
+    itchat.auto_login(hotReload=True, enableCmdQR=2)
     itchat.run()

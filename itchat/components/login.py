@@ -8,6 +8,7 @@ import xml.dom.minidom
 import random
 import traceback
 import logging
+
 try:
     from httplib import BadStatusLine
 except ImportError:
@@ -66,8 +67,10 @@ def login(self, enableCmdQR=False, picDir=None, qrCallback=None,
             elif status == '201':
                 if isLoggedIn is not None:
                     logger.info('Please press confirm on your phone.')
+                    print('await...', end='\r', flush=True)
                     isLoggedIn = None
-            elif status != '408':
+            elif status != '408' and status != '400':
+                # await status or other location login
                 break
         if isLoggedIn:
             break
@@ -323,6 +326,7 @@ def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
             exitCallback()
         else:
             logger.info('LOG OUT!')
+
     if getReceivingFnOnly:
         return maintain_loop
     else:

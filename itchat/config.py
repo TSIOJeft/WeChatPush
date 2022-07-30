@@ -1,3 +1,4 @@
+# coding=utf-8
 import os, platform
 
 VERSION = '1.5.0.dev'
@@ -20,4 +21,7 @@ UOS_PATCH_EXTSPAM = 'Go8FCIkFEokFCggwMDAwMDAwMRAGGvAESySibk50w5Wb3uTl2c2h64jVVrV
 SELF_MES = False
 
 PUSH_REGID = '0+BJEyLwk0kAwDvqOkt1qh8N4iPe7MtpsX0qeX9PoiQqOR60nkvM/u1fk/qDFDmg'
+
+# 0 for mi , 1 for oppo 2 for huawei
 PHONE_TYPE = 0
+BLOCK_NAME = ['block1', '远方2', 'block3']
