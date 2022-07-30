@@ -11,6 +11,7 @@
 环境文件我就不删了
 嘻嘻
 ## 需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为
+## 不接收的消息来自用户名 写在itchat/config BLOCK_NAME 数组里
 ## 如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
 [FarPush](www.coolapk.com/apk/com.farplace.farpush)
 ## FarPush 交流群 833957139
