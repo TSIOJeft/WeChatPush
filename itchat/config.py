@@ -20,7 +20,7 @@ UOS_PATCH_EXTSPAM = 'Go8FCIkFEokFCggwMDAwMDAwMRAGGvAESySibk50w5Wb3uTl2c2h64jVVrV
 # if show self send mes
 SELF_MES = False
 
-PUSH_REGID = '0+BJEyLwk0kAwDvqOkt1qh8N4iPe7MtpsX0qeX9PoiQqOR60nkvM/u1fk/qDFDmg'
+PUSH_REGID = ''
 
 # 0 for mi , 1 for oppo 2 for huawei
 PHONE_TYPE = 0
