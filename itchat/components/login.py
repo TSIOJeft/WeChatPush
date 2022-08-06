@@ -176,6 +176,7 @@ def process_login_info(core, loginContent):
                }
     r = core.s.get(core.loginInfo['url'],
                    headers=headers, allow_redirects=False)
+
     core.loginInfo['url'] = core.loginInfo['url'][:core.loginInfo['url'].rfind(
         '/')]
     for indexUrl, detailedUrl in (
