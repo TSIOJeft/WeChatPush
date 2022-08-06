@@ -10,24 +10,24 @@
 
 包自己导吧 环境文件我就不删了 嘻嘻
 
-### 需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为 4对应腾讯推送 3对应fcm（服务器还没整）
+需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为 4对应腾讯推送 3对应fcm（服务器还没整）
 
-### 不接收的消息来自用户名 写在itchat/config BLOCK_NAME 数组里 包含关系 只需要输入前几位就行
+不接收的消息来自用户名 写在itchat/config BLOCK_NAME 数组里 包含关系 只需要输入前几位就行
 
-### 目前mipush 腾讯云推送 支持通知栏直接回复 需要的话 在itchat/config 里的 MES_THROUGH 改为 1 并且在FarPush 快速回复里填写你的服务器地址 像这样 http://192.168.0.1:9091/send
+目前mipush 腾讯云推送 支持通知栏直接回复 需要的话 在itchat/config 里的 MES_THROUGH 改为 1 并且在FarPush 快速回复里填写你的服务器地址 像这样 http://192.168.0.1:9091/send
 这样的话FarPush 在接收到透传消息 会发送支持回复的通知 然后通知你的服务器 发送消息 用的是python flask 端口默认在9091 可能需要您开启防火墙 或者自行更改端口
 
 
-### 如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
+如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
 
 [FarPush](www.coolapk.com/apk/com.farplace.farpush)
 
 # FarPush 交流群 833957139
 
-# 如果运行失败 请导入 requests包 pyqrcode包 pypng包 flask包 gevent 包
+如果运行失败 请导入 requests包 pyqrcode包 pypng包 flask包 gevent 包
 
 
-# centeros 还需要 yum install xdg-utils
+centeros 还需要 yum install xdg-utils
 
 # 欢迎star 嘻嘻嘻 感谢您的帮助
 
