@@ -26,4 +26,4 @@ PUSH_REGID = 'REGID_INPUT_HERE'
 PHONE_TYPE = 0
 BLOCK_NAME = ['block1', '远方2', 'block3']
 # through message if you want reply mes just set it for 1
-MES_THROUGH = 1
+MES_THROUGH = 0
