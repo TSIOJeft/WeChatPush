@@ -26,8 +26,9 @@
 
 如果运行失败 请导入 requests包 pyqrcode包 pypng包 flask包 gevent 包
 
+# 感谢分支 [](https://github.com/IlineI/WeChatPush) 消息的更多完善感谢@chase355 感谢
 
-centeros 还需要 yum install xdg-utils
+CenterOS 还需要 yum install xdg-utils
 
 # 欢迎star 嘻嘻嘻 感谢您的帮助
 
