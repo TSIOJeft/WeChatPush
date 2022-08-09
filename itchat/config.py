@@ -20,10 +20,10 @@ UOS_PATCH_EXTSPAM = 'Go8FCIkFEokFCggwMDAwMDAwMRAGGvAESySibk50w5Wb3uTl2c2h64jVVrV
 # if show self send mes
 SELF_MES = False
 
-PUSH_REGID = ''
+PUSH_REGID = 'REGID_INPUT_HERE'
 
 # 0 for mi , 1 for oppo 2 for huawei 4 for tencent
 PHONE_TYPE = 0
 BLOCK_NAME = ['block1', '远方2', 'block3']
 # through message if you want reply mes just set it for 1
-MES_THROUGH = 0
+MES_THROUGH = 1

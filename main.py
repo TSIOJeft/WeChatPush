@@ -27,13 +27,18 @@ def received():
 
 @itchat.msg_register(itchat.content.TEXT)
 def text_reply(msg):
-    print(msg.user.nickName + " say : " + msg.text)
+    print(msg.user.nickName + " 说 : " + msg.text)
     farpush.mespush(msg.user.nickName, msg.text)
 
 
-@itchat.msg_register([itchat.content.VOICE, itchat.content.PICTURE, itchat.content.VIDEO])
-def text_reply(msg):
-    farpush.mespush(msg.user.nickName, msg.type)
+@itchat.msg_register(itchat.content.MEDIA_TYPE_MSG)
+def text_media(msg):
+    if msg.type in itchat.content.MESSAGE_TEXT:
+        msgtext = itchat.content.MESSAGE_TEXT[msg.type]
+    else:
+        msgtext = '未定义类型'
+    print(msg.user.nickName + " 发送了 : " + msgtext)
+    farpush.mespush(msg.user.nickName, msgtext)
 
 
 @itchat.msg_register(itchat.content.TEXT, isGroupChat=True)

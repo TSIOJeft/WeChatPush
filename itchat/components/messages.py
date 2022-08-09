@@ -1,3 +1,4 @@
+from ast import In
 import os, time, re, io
 import json
 import mimetypes, hashlib
@@ -49,24 +50,19 @@ def get_download_fn(core, url, msgId):
 
 
 def produce_msg(core, msgList):
-    ''' for messages types
-     * 40 msg, 43 videochat, 50 VOIPMSG, 52 voipnotifymsg
-     * 53 webwxvoipnotifymsg, 9999 sysnotice
-    '''
     rl = []
-    srl = [40, 43, 50, 52, 53, 9999]
     for m in msgList:
         # get actual opposite
-        if m['FromUserName'] == core.storageClass.userName:
+        if m.get('FromUserName') == core.storageClass.userName:
             if config.SELF_MES:
-                actualOpposite = m['ToUserName']
+                actualOpposite = m.get('ToUserName')
             else:
                 # not send self mes
                 continue
         else:
-            actualOpposite = m['FromUserName']
+            actualOpposite = m.get('FromUserName')
         # produce basic message
-        if '@@' in m['FromUserName'] or '@@' in m['ToUserName']:
+        if '@@' in m.get('FromUserName') or '@@' in m.get('ToUserName'):
             produce_group_chat(core, m)
         else:
             utils.msg_formatter(m, 'Content')
@@ -84,154 +80,99 @@ def produce_msg(core, msgList):
                         templates.User(userName=actualOpposite)
             # by default we think there may be a user missing not a mp
         m['User'].core = core
-        if m['MsgType'] == 1:  # words
-            if m['Url']:
-                regx = r'(.+?\(.+?\))'
-                data = re.search(regx, m['Content'])
-                data = 'Map' if data is None else data.group(1)
-                msg = {
-                    'Type': 'Map',
-                    'Text': data, }
-            else:
-                msg = {
-                    'Type': 'Text',
-                    'Text': m['Content'], }
-        elif m['MsgType'] == 3 or m['MsgType'] == 47:  # picture
-            download_fn = get_download_fn(core,
-                                          '%s/webwxgetmsgimg' % core.loginInfo['url'], m['NewMsgId'])
-            msg = {
-                'Type': 'Picture',
-                'FileName': '%s.%s' % (time.strftime('%y%m%d-%H%M%S', time.localtime()),
-                                       'png' if m['MsgType'] == 3 else 'gif'),
-                'Text': download_fn, }
-        elif m['MsgType'] == 34:  # voice
-            download_fn = get_download_fn(core,
-                                          '%s/webwxgetvoice' % core.loginInfo['url'], m['NewMsgId'])
-            msg = {
-                'Type': 'Recording',
-                'FileName': '%s.mp3' % time.strftime('%y%m%d-%H%M%S', time.localtime()),
-                'Text': download_fn, }
-        elif m['MsgType'] == 37:  # friends
-            m['User']['UserName'] = m['RecommendInfo']['UserName']
-            msg = {
-                'Type': 'Friends',
-                'Text': {
-                    'status': m['Status'],
-                    'userName': m['RecommendInfo']['UserName'],
-                    'verifyContent': m['Ticket'],
-                    'autoUpdate': m['RecommendInfo'], }, }
-            m['User'].verifyDict = msg['Text']
-        elif m['MsgType'] == 42:  # name card
-            msg = {
-                'Type': 'Card',
-                'Text': m['RecommendInfo'], }
-        elif m['MsgType'] in (43, 62):  # tiny video
-            msgId = m['MsgId']
-
-            def download_video(videoDir=None):
-                url = '%s/webwxgetvideo' % core.loginInfo['url']
-                params = {
-                    'msgid': msgId,
-                    'skey': core.loginInfo['skey'], }
-                headers = {'Range': 'bytes=0-', 'User-Agent': config.USER_AGENT}
-                r = core.s.get(url, params=params, headers=headers, stream=True)
-                tempStorage = io.BytesIO()
-                for block in r.iter_content(1024):
-                    tempStorage.write(block)
-                if videoDir is None:
-                    return tempStorage.getvalue()
-                with open(videoDir, 'wb') as f:
-                    f.write(tempStorage.getvalue())
-                return ReturnValue({'BaseResponse': {
-                    'ErrMsg': 'Successfully downloaded',
-                    'Ret': 0, }})
-
-            msg = {
-                'Type': 'Video',
-                'FileName': '%s.mp4' % time.strftime('%y%m%d-%H%M%S', time.localtime()),
-                'Text': download_video, }
-        elif m['MsgType'] == 49:  # sharing
-            if m['AppMsgType'] == 0:  # chat history
-                msg = {
-                    'Type': 'Note',
-                    'Text': m['Content'], }
-            elif m['AppMsgType'] == 6:
-                rawMsg = m
-                cookiesList = {name: data for name, data in core.s.cookies.items()}
-
-                def download_atta(attaDir=None):
-                    url = core.loginInfo['fileUrl'] + '/webwxgetmedia'
-                    params = {
-                        'sender': rawMsg['FromUserName'],
-                        'mediaid': rawMsg['MediaId'],
-                        'filename': rawMsg['FileName'],
-                        'fromuser': core.loginInfo['wxuin'],
-                        'pass_ticket': 'undefined',
-                        'webwx_data_ticket': cookiesList['webwx_data_ticket'], }
-                    headers = {'User-Agent': config.USER_AGENT}
-                    r = core.s.get(url, params=params, stream=True, headers=headers)
-                    tempStorage = io.BytesIO()
-                    for block in r.iter_content(1024):
-                        tempStorage.write(block)
-                    if attaDir is None:
-                        return tempStorage.getvalue()
-                    with open(attaDir, 'wb') as f:
-                        f.write(tempStorage.getvalue())
-                    return ReturnValue({'BaseResponse': {
-                        'ErrMsg': 'Successfully downloaded',
-                        'Ret': 0, }})
-
-                msg = {
-                    'Type': 'Attachment',
-                    'Text': download_atta, }
-            elif m['AppMsgType'] == 8:
-                download_fn = get_download_fn(core,
-                                              '%s/webwxgetmsgimg' % core.loginInfo['url'], m['NewMsgId'])
-                msg = {
-                    'Type': 'Picture',
-                    'FileName': '%s.gif' % (
-                        time.strftime('%y%m%d-%H%M%S', time.localtime())),
-                    'Text': download_fn, }
-            elif m['AppMsgType'] == 17:
-                msg = {
-                    'Type': 'Note',
-                    'Text': m['FileName'], }
-            elif m['AppMsgType'] == 2000:
-                regx = r'\[CDATA\[(.+?)\][\s\S]+?\[CDATA\[(.+?)\]'
-                data = re.search(regx, m['Content'])
-                if data:
-                    data = data.group(2).split(u'\u3002')[0]
-                else:
-                    data = 'You may found detailed info in Content key.'
-                msg = {
-                    'Type': 'Note',
-                    'Text': data, }
-            else:
-                msg = {
-                    'Type': 'Sharing',
-                    'Text': m['FileName'], }
-        elif m['MsgType'] == 51:  # phone init
-            msg = update_local_uin(core, m)
-        elif m['MsgType'] == 10000:
-            msg = {
-                'Type': 'Note',
-                'Text': m['Content'], }
-        elif m['MsgType'] == 10002:
-            regx = r'\[CDATA\[(.+?)\]\]'
-            data = re.search(regx, m['Content'])
-            data = 'System message' if data is None else data.group(1).replace('\\', '')
-            msg = {
-                'Type': 'Note',
-                'Text': data, }
-        elif m['MsgType'] in srl:
-            msg = {
-                'Type': 'Useless',
-                'Text': 'UselessMsg', }
+        msg = {}
+        msg['ChatRoom'] = 0
+        if m.get('FromUserName') == 'weixin':
+            msg['Name'] = msg['NickName'] = '微信团队'
+        elif m.get('MsgType') == 37:
+            msg['Name'] = msg['NickName'] = m.get('RecommendInfo').get('NickName')
         else:
-            logger.debug('Useless message received: %s\n%s' % (m['MsgType'], str(m)))
-            msg = {
-                'Type': 'Useless',
-                'Text': 'UselessMsg', }
+            Chatroom = '{' + str(''.join(re.findall(r'\[\<ChatroomMember: \{(.*?)\}\>, \<ChatroomMember:', str(m)))) + '}'
+            if Chatroom == '{}':
+                msg['Name'] = m.get('User').get('NickName') if m.get('User').get('RemarkName') == '' else m.get('User').get('RemarkName')
+                msg['NickName'] = m.get('User').get('NickName')
+            else:
+                if m.get('User').get('ChatRoomOwner') == m.get('ToUserName'):
+                    Chatroom = '{' + str(''.join(re.findall(r'\>, \<ChatroomMember: \{(.*?)\}\>\]\>', str(m)))) + '}'
+                ChatroomMember = eval(Chatroom.replace('<','\'').replace('>','\''))
+                msg['ChatRoom'] = 1
+                msg['NickName'] = msg['ChatRoomName'] = m.get('User').get('NickName')
+                msg['Name'] = ChatroomMember.get('NickName') if ChatroomMember.get('DisplayName') == '' else ChatroomMember.get('DisplayName')
+        if m.get('MsgType') == 1:  # words
+            if m.get('Url'):
+                msg['Type'] = 'Map'
+                msg['Text'] = str(''.join(re.findall(r'poiname="(.*?)" poiid', str(m.get('OriContent')))))
+            else:
+                msg['Type'] = 'Text'
+                msg['Text'] = m.get('Content')
+        elif m.get('MsgType') == 3:  # picture
+            msg['Type'] = 'Picture'
+        elif m.get('MsgType') == 34:  # voice
+            msg['Type'] = 'Recording'
+        elif m.get('MsgType') == 37:  # friends
+            msg['Type'] = 'Friends'
+        elif m.get('MsgType') == 42:  # name card
+            msg['Type'] = 'Card'
+            msg['Text'] = m.get('RecommendInfo').get('NickName')
+        elif m.get('MsgType') in (43, 62):  # tiny video
+            msg['Type'] = 'Video'
+        elif m.get('MsgType') == 47:  # emoti_con
+            msg['Type'] = 'Emoticon'
+        elif m.get('MsgType') == 48:
+            msg['Type'] = 'Location'
+        elif m.get('MsgType') == 49:  # sharing
+            if m.get('FromUserName') == 'weixin':
+                msg['Type'] = 'Servicenotification'
+                msg['Text'] = m.get('FileName')
+            elif msg.get('Name') == None:
+                msg['Name'] = msg['NickName'] = '服务通知'
+                msg['Type'] = 'Servicenotification'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 0:  # chat history
+                msg['Type'] = 'Chathistory'
+            elif m.get('AppMsgType') == 3:
+                msg['Type'] = 'Musicshare'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 5:
+                msg['Type'] = 'Webshare'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 6:
+                msg['Type'] = 'Attachment'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 8:
+                msg['Type'] = 'Picture'
+            elif m.get('AppMsgType') == 17:
+                msg['Type'] = 'Locationshare'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 33:
+                msg['Type'] = 'Miniprogram'
+                msg['Text'] = m.get('FileName')
+            elif m.get('AppMsgType') == 2000:
+                msg['Type'] = 'Transfer'
+            else:
+                msg['Type'] = 'Sharing'
+                msg['Text'] = m.get('AppMsgType')
+        elif m.get('MsgType') in (50, 52, 53): # voip
+            msg['Type'] = 'Voip'
+        elif m.get('MsgType') == 51:  # phone init
+            msg = update_local_uin(core, m)
+        elif m.get('MsgType') == 10000:
+            if m.get('Content') == '收到红包，请在手机上查看':
+                msg['Type'] = 'Redenvelope'
+            elif m.get('Content') == '群收款消息，请在手机上查看':
+                msg['Type'] = 'Transfer'
+            elif m.get('Content') == '你的微信版本较低，升级微信体验多人语音通话。':
+                msg['Type'] = 'Voip'
+            else:
+                msg['Type'] = 'Systemnotification'
+        elif m.get('MsgType') == 10002:
+            msg['Type'] = 'Recalled'
+        elif m.get('MsgType') in (40, 9999):
+            msg['Type'] = 'Useless'
+            msg['Text'] = 'UselessMsg'
+        else:
+            msg['Type'] = 'Undefined'
+            msg['Text'] = m.get('MsgType')
         m = dict(m, **msg)
         rl.append(m)
     return rl
