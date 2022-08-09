@@ -20,6 +20,8 @@
 
 如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
 
+后台运行 请使用 nohup python3 main.py&
+
 [FarPush](www.coolapk.com/apk/com.farplace.farpush)
 
 # FarPush 交流群 833957139
