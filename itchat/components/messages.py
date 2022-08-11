@@ -160,7 +160,7 @@ def produce_msg(core, msgList):
             if m.get('Content') == '收到红包，请在手机上查看':
                 msg['Type'] = 'Redenvelope'
             elif m.get('Content') == '群收款消息，请在手机上查看':
-                msg['Type'] = 'Transfer'
+                msg['Type'] = 'Splitthebill'
             elif m.get('Content') == '你的微信版本较低，升级微信体验多人语音通话。':
                 msg['Type'] = 'Voip'
             else:
