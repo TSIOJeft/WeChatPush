@@ -1,5 +1,7 @@
 requests
 pyqrcode
 pypng
-gevent
+wheel
+waitress
+setuptools
 flask

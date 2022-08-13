@@ -1,6 +1,5 @@
 import requests
 from flask import Flask, request, jsonify
-from gevent import pywsgi
 import itchat
 import itchat.content
 import itchat.config
@@ -51,15 +50,15 @@ def send(username, content):
 
 
 def send4nick(nickname, content):
-    friends = itchat.search_friends(nickName=nickname)
+    friends = itchat.search_friends(name=nickname)
     if friends:
         author = friends[0]
         author.send(content)
 
 
 def flask(ip, port):
-    server = pywsgi.WSGIServer((ip, port), app)
-    server.serve_forever()
+    from waitress import serve
+    serve(app, host=ip, port=port)
 
 
 if __name__ == '__main__':
