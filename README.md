@@ -26,11 +26,11 @@
 
 # FarPush 交流群 833957139
 
-如果运行失败 请导入 requests包 pyqrcode包 pypng包 flask包 gevent 包
+导入库 pip3 install -r requirements.txt
 
 感谢分支 [WeChatPush](https://github.com/IlineI/WeChatPush) 消息的更多完善感谢@chase355 感谢
 
-CenterOS 还需要 yum install xdg-utils
+CentOS 还需要 yum install xdg-utils
 
 # 欢迎star 嘻嘻嘻 感谢您的帮助
 
