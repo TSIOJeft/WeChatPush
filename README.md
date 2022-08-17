@@ -22,7 +22,7 @@
 
 后台运行 请使用 nohup python3 main.py& tail -f nohup.out
 
-[FarPush](www.coolapk.com/apk/com.farplace.farpush)
+[FarPush](https://www.coolapk.com/apk/com.farplace.farpush)
 
 # FarPush 交流群 833957139
 
