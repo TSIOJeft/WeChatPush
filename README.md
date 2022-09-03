@@ -14,8 +14,13 @@
 
 不接收的消息来自用户名 写在itchat/config BLOCK_NAME 数组里 包含关系 只需要输入前几位就行
 
-目前mipush 腾讯云推送 支持通知栏直接回复 需要的话 在itchat/config 里的 MES_THROUGH 改为 1 并且在FarPush 快速回复里填写你的服务器地址 像这样 http://192.168.0.1:9091/send
-这样的话FarPush 在接收到透传消息 会发送支持回复的通知 然后通知你的服务器 发送消息 用的是python flask 端口默认在9091 可能需要您开启防火墙 或者自行更改端口
+目前mipush 腾讯云推送 支持直接回复 腾讯云需要在itchat/config 里的 MES_THROUGH 改为 1 
+并且在FarPush 快速回复里填写你的服务器地址 像这样 http://192.168.0.1:9091/send
+这样的话FarPush 在接收到消息 会发送支持回复的通知 然后通知你的服务器 发送消息 用的是python flask 端口默认在9091 可能需要您开启防火墙 或者自行更改端口
+
+快速查看语音 或者图片 请在快速回复里填入你的服务器地址 http://192.168.0.1:9091/send 这样 后面的/send 不影响 会自动处理
+存储的文件在 files 文件夹内 FarPush 存储在 /storage/emulated/0/android/data/com.farplace.qingzhuo/files/media 内
+目前没写自动清理 后面可能有 或者有大佬动手写下把 呜呜呜
 
 
 如果window 等需要使用图片请在main.py 里 itchat 参数内删掉 enablecmdqr
@@ -35,4 +40,6 @@ CentOS 还需要 yum install xdg-utils
 # 欢迎star 嘻嘻嘻 感谢您的帮助
 
 我不会python 所以就只在itchat基础上加了推送的代码
+
+电子仿生机器人不会喝酒群 655358924
 
