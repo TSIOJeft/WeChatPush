@@ -32,7 +32,6 @@ def getuser():
     friends = itchat.search_friends(name=username)
     if friends:
         author = friends[0]
-        print(itchat.get_head_img(userName=author.userName))
         user = {'nickName': author.nickName, 'remarkName': author.remarkName, 'headImage': author.get_head_image_url()}
     return json.dumps(user)
 
