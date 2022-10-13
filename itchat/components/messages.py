@@ -87,17 +87,20 @@ def produce_msg(core, msgList):
         elif m.get('MsgType') == 37:
             msg['Name'] = msg['NickName'] = m.get('RecommendInfo').get('NickName')
         else:
-            Chatroom = '{' + str(''.join(re.findall(r'\[\<ChatroomMember: \{(.*?)\}\>, \<ChatroomMember:', str(m)))) + '}'
+            Chatroom = '{' + str(
+                ''.join(re.findall(r'\[\<ChatroomMember: \{(.*?)\}\>, \<ChatroomMember:', str(m)))) + '}'
             if Chatroom == '{}':
-                msg['Name'] = m.get('User').get('NickName') if m.get('User').get('RemarkName') == '' else m.get('User').get('RemarkName')
+                msg['Name'] = m.get('User').get('NickName') if m.get('User').get('RemarkName') == '' else m.get(
+                    'User').get('RemarkName')
                 msg['NickName'] = m.get('User').get('NickName')
             else:
                 if m.get('User').get('ChatRoomOwner') == m.get('ToUserName'):
                     Chatroom = '{' + str(''.join(re.findall(r'\>, \<ChatroomMember: \{(.*?)\}\>\]\>', str(m)))) + '}'
-                ChatroomMember = eval(Chatroom.replace('<','\'').replace('>','\''))
+                ChatroomMember = eval(Chatroom.replace('<', '\'').replace('>', '\''))
                 msg['ChatRoom'] = 1
                 msg['NickName'] = msg['ChatRoomName'] = m.get('User').get('NickName')
-                msg['Name'] = ChatroomMember.get('NickName') if ChatroomMember.get('DisplayName') == '' else ChatroomMember.get('DisplayName')
+                msg['Name'] = ChatroomMember.get('NickName') if ChatroomMember.get(
+                    'DisplayName') == '' else ChatroomMember.get('DisplayName')
         if m.get('MsgType') == 1:  # words
             if m.get('Url'):
                 msg['Type'] = 'Map'
@@ -106,8 +109,17 @@ def produce_msg(core, msgList):
                 msg['Type'] = 'Text'
                 msg['Text'] = m.get('Content')
         elif m.get('MsgType') == 3:  # picture
+            download_fn = get_download_fn(core,
+                                          '%s/webwxgetmsgimg' % core.loginInfo['url'], m['NewMsgId'])
+            msg['FileName'] = './files/%s.%s' % (time.strftime('%y%m%d-%H%M%S', time.localtime()),
+                                         'png' if m['MsgType'] == 3 else 'gif')
+            msg['Text'] = download_fn
             msg['Type'] = 'Picture'
         elif m.get('MsgType') == 34:  # voice
+            download_fn = get_download_fn(core,
+                                          '%s/webwxgetvoice' % core.loginInfo['url'], m['NewMsgId'])
+            msg['FileName'] = './files/%s.mp3' % time.strftime('%y%m%d-%H%M%S', time.localtime())
+            msg['Text'] = download_fn
             msg['Type'] = 'Recording'
         elif m.get('MsgType') == 37:  # friends
             msg['Type'] = 'Friends'
@@ -152,7 +164,7 @@ def produce_msg(core, msgList):
             else:
                 msg['Type'] = 'Sharing'
                 msg['Text'] = m.get('AppMsgType')
-        elif m.get('MsgType') in (50, 52, 53): # voip
+        elif m.get('MsgType') in (50, 52, 53):  # voip
             msg['Type'] = 'Voip'
         elif m.get('MsgType') == 51:  # phone init
             msg = update_local_uin(core, m)
