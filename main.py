@@ -8,8 +8,12 @@ import socket
 import json
 import _thread
 import os
+import datetime
 
 app = Flask(__name__)
+
+# store messages
+messages = []
 
 
 @app.route("/send", methods=['POST'])
@@ -48,6 +52,11 @@ def getuserphoto():
 
 
 # 调用定义的方法
+@app.route("/getmessagelist", methods=['GET'])
+def getmessage():
+    message = {"messages": messages}
+    return json.dumps(message)
+
 
 @app.route("/getfile", methods=['POST'])
 def getfile():
@@ -57,7 +66,12 @@ def getfile():
 
 @itchat.msg_register(itchat.content.TEXT)
 def text_reply(msg):
+    message = {}
     print((msg.user.remarkName or msg.user.nickName) + " 说 : " + msg.text)
+    message['name'] = (msg.user.remarkName or msg.user.nickName)
+    message['content'] = msg.text
+    message['time'] = int(datetime.datetime.now().timestamp())
+    messages.append(message)
     farpush.mespush((msg.user.remarkName or msg.user.nickName), msg.text)
 
 
@@ -79,6 +93,7 @@ def mes_media(msg):
     farpush.mdpush((msg.user.remarkName or msg.user.nickName), itchat.content.MESSAGE_TEXT[msg.type], msg.fileName)
 
 
+# for group
 @itchat.msg_register(itchat.content.TEXT, isGroupChat=True)
 def text_reply(msg):
     farpush.mespush(msg.user.nickName, msg.text)

@@ -6,7 +6,8 @@ import requests
 import socket
 import json
 
-farpush_url = "http://124.70.44.216:9090"
+farpush_url = "http://www.farpush.cn:9090"
+
 
 
 class farpush:
