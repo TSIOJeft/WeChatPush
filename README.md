@@ -28,7 +28,23 @@
 
 后台运行 请使用 nohup python3 main.py& tail -f nohup.out
 
-[FarPush](www.coolapk.com/apk/com.farplace.farpush)
+[FarPush](https://www.coolapk.com/apk/com.farplace.farpush)
+
+# 使用`systemctl`作为守护进程运行
+
+修改`WechatPush@.service`第10行的工作目录为当前工程的根目录
+
+复制`WechatPush@.service`到`/lib/systemd/system`目录下：`sudo cp WeChatPush@.service /lib/systemd/system`
+
+重新加载systemd模块：`sudo systemctl daemon-reload`
+
+启动服务，user为Linux的用户名：`sudo systemctl start WeChatPush@user`
+
+第一次需要登陆，可查看工程目录下的`QR.png`文件，扫描二维码登陆
+
+设置为开机自启动：`sudo systemctl enable WeChatPush@user`
+
+查看运行状态：`sudo systemctl status WeChatPush@user`
 
 # FarPush 交流群 833957139
 

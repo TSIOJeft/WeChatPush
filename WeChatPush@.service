@@ -1,0 +1,15 @@
+[Unit]
+Description=WeChatPush Service for %i
+After=network.target
+
+[Service]
+Type=idle
+User=%i
+Restart=on-failure
+RestartSec=60s
+WorkingDirectory=/root/WeChatPush
+ExecStart=python main.py
+
+[Install]
+WantedBy=multi-user.target
+
