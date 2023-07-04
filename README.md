@@ -42,6 +42,6 @@ CentOS 还需要 yum install xdg-utils
 
 我不会python 所以就只在itchat基础上加了推送的代码
 
-# 2023/2/6 续费服务器和域名 2伯 服务器截至 2023/5/6
+# 2023/2/6 续费服务器和域名 2伯 服务器截至 2023/10月
 有需要这个项目的富哥可以v我一点 
 [wechat](https://github.com/TSIOJeft/WeChatPush/blob/main/wechat.jpg)
