@@ -22,7 +22,7 @@ SELF_MES = False
 
 PUSH_REGID = 'there input you phone id'
 
-# 0 for mi , 1 for oppo 2 for huawei 4 for tencent
+# 0 for mi , 1 for oppo 2 for huawei 4 for tencent 5 for bark
 PHONE_TYPE = '4'
 BLOCK_NAME = ['block1', '远方2', 'block3']
 # through message if you want reply mes just set it for 1
