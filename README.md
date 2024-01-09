@@ -50,6 +50,7 @@ CentOS 还需要 yum install xdg-utils
 
 没钱续费服务器 
 ⚠ 我公开了服务器端的jar 包以后大家就跑这个jar 包到你的服务器吧 然后把python 里的推送地址改成你的服务器ip
+
 再见
 
 
