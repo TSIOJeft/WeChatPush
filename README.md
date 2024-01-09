@@ -2,7 +2,7 @@
 
 基于itchat的微信消息接收端 感谢itchat大佬 和itchat-uos开发 因为我有些地方需要更改就单独下载了itchat的包然后更改的
 
-你可以挂在服务器上或者 电脑上 亦或者 单片机上 反正想咋玩就咋玩 微信真的毒瘤 消息推送迟迟不安排 难顶 😱
+你可以挂在服务器上或者 电脑上 亦或者 单片机上 
 
 [itchat](https://github.com/littlecodersh/ItChat)
 
@@ -10,7 +10,7 @@
 
 包自己导吧 环境文件我就不删了 嘻嘻
 
-需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为 4对应腾讯推送 3对应fcm（服务器还没整）
+⚠ 需要修改 itchat/config 内的 设备ID 和phone 0对应小米 1对应oppo 2对应华为 4对应腾讯推送 3对应fcm （服务器还没整）5bark
 
 不接收的消息来自用户名 写在itchat/config BLOCK_NAME 数组里 包含关系 只需要输入前几位就行
 
@@ -42,6 +42,14 @@ CentOS 还需要 yum install xdg-utils
 
 我不会python 所以就只在itchat基础上加了推送的代码
 
-# 2023/2/6 续费服务器和域名 2伯 服务器截至 2023/10月
-有需要这个项目的富哥可以v我一点 
-[wechat](https://github.com/TSIOJeft/WeChatPush/blob/main/wechat.jpg)
+# 2023/2/6 
+
+续费服务器和域名 2伯 服务器截至 2023/10月
+
+# 2024/1/10
+
+没钱续费服务器 
+⚠ 我公开了服务器端的jar 包以后大家就跑这个jar 包到你的服务器吧 然后把python 里的推送地址改成你的服务器ip
+再见
+
+
